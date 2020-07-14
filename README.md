@@ -1,2 +1,2 @@
 # frozen-pukhuri
-An implementation and visualization of frozen lake reinforcement learning example from Open AI Gym
+An implementation, visualization, extention of reinforcement learning (Q-Learning) on frozen lake environment from Open AI Gym
