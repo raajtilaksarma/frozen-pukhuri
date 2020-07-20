@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 	<title>Frozen Lake</title>
 </head>
@@ -7,14 +7,42 @@
 
 	<h1>Frozen Lake Reinforcement Learning Environment - OpenAI Gym Visualization</h1>
 
-	<form method="POST" action="/">
-		 Enter number of Attempts : <input type="text" name="attempts" required="" /><br /><br />
-		<input type="submit" name="submit" value="Submit">
+	<form action="" method="POST"> 
+		 Enter number of Attempts : <input type="number" id="attempts" name="attempts" required/><br /><br />
+		<input type="submit"/>
 	</form>	
+	<div class="message_holder"></div>
 	
-{% for point in point_path %}
+<!-- {% for point in point_path %}
     {{point}} <br>
-{% endfor %}
-
+{% endfor %} -->
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <script type="text/javascript">
+      var socket = io.connect('http://' + document.domain + ':' + location.port);
+      socket.on( 'connect', function() {
+        socket.emit( 'my event', {
+          data: 'User Connected'
+        } )
+        var form = $( 'form' ).on( 'submit', function( e ) {
+          e.preventDefault()
+          let attempts = $( 'input.attempts' ).val()
+		  console.log(attempts)
+          socket.emit( 'my event', {
+            attempts : attempts,
+          } )
+          $( 'input.attempts' ).val( '' ).focus()
+        } )
+      } )
+      socket.on( 'my response', function( msg ) {
+        console.log( msg )
+        if( typeof msg.attempts !== 'undefined' ) {
+          $( 'div.message_holder' ).append( '<div>'+msg.attempts+'</div>' )
+        }
+      })
+	</script>
+	
 </body>
 </html>
+
