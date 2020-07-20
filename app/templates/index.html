@@ -37,9 +37,9 @@
       } )
       socket.on( 'my response', function( msg ) {
         console.log( msg )
-        if( typeof msg.attempts !== 'undefined' ) {
+        if( typeof msg.message !== 'undefined' ) {
         //   $( 'div.message_holder' ).append( '<div>'+msg.attempts+'</div>' )
-			document.getElementById("message_holder").innerHTML  = msg.attempts;
+			document.getElementById("message_holder").innerHTML  = msg.message;
         }
       })
 	</script>

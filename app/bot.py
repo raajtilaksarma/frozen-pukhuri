@@ -29,7 +29,7 @@ def attempting(attempts = 1):
     rewards_all_episodes = []
     # read / learn q-table
     q_table = np.load('q_table.npy')
-    positions = []
+    # positions = []
     for episode in range(attempts):
         state = env.reset()
         done = False
@@ -39,7 +39,8 @@ def attempting(attempts = 1):
         for step in range(max_steps_per_episode):
     #         clear_output(wait=True)
             row, col = get_position(env)
-            positions.append((row, col))
+            yield (row,col)
+            # positions.append((row, col))
     #         get_position(env)
             time.sleep(0.1)
             action = np.argmax(q_table[state, :])
@@ -49,11 +50,13 @@ def attempting(attempts = 1):
     #             clear_output(wait=True)
     #             get_position(env)
                 if reward==1:
-                    print("Goal reached. . .")
+                    # print("Goal reached. . .")
+                    yield 'Goal reached. . .'
                 else:
-                    print("Mission failed. . .")
+                    # print("Mission failed. . .")
+                    yield 'Mission failed. . .'
                 break
             state = new_state
     env.close()
-    return positions
+    # return positions
 
