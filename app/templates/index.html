@@ -11,7 +11,7 @@
 		 Enter number of Attempts : <input type="number" id="attempts" name="attempts" required/><br /><br />
 		<input type="submit"/>
 	</form>	
-	<div class="message_holder"></div>
+	<div id="message_holder"></div>
 	
 <!-- {% for point in point_path %}
     {{point}} <br>
@@ -27,7 +27,7 @@
         } )
         var form = $( 'form' ).on( 'submit', function( e ) {
           e.preventDefault()
-          let attempts = $( 'input.attempts' ).val()
+          let attempts = $( '#attempts' ).val()
 		  console.log(attempts)
           socket.emit( 'my event', {
             attempts : attempts,
@@ -38,7 +38,8 @@
       socket.on( 'my response', function( msg ) {
         console.log( msg )
         if( typeof msg.attempts !== 'undefined' ) {
-          $( 'div.message_holder' ).append( '<div>'+msg.attempts+'</div>' )
+        //   $( 'div.message_holder' ).append( '<div>'+msg.attempts+'</div>' )
+			document.getElementById("message_holder").innerHTML  = msg.attempts;
         }
       })
 	</script>

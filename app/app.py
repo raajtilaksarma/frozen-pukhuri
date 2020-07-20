@@ -24,8 +24,12 @@ def messageReceived(methods=['GET', 'POST']):
 
 @socketio.on('my event')
 def handle_my_custom_event(json, methods=['GET', 'POST']):
+    print(type(json))
+    if 'attempts' in json:
+        print(json['attempts'])
     print('received my event: ' + str(json))
     socketio.emit('my response', json, callback=messageReceived)
+
 
 if __name__=='__main__':
     socketio.run(app, debug=True)
