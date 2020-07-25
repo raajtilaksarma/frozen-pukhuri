@@ -3,23 +3,103 @@
 <head>
 	<title>Frozen Lake</title>
 </head>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+<style>
+  .card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 80%;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+  }
+  
+  .card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+
+  table.dataTable thead th {
+  border-bottom: 0;
+  }
+
+  table.dataTable tfoot th {
+  border-top: 0;
+  }
+
+  td.highlight {
+    background-color: whitesmoke !important;
+  }
+
+  /* tr.highlight {
+    background-color: whitesmoke !important;
+  } */
+
+</style>
+
 <body>
-
-	<h1>Frozen Lake Reinforcement Learning Environment - OpenAI Gym Visualization</h1>
-
-	<form action="" method="POST"> 
-		 Enter number of Attempts : <input type="number" id="attempts" name="attempts" required/><br /><br />
-		<input type="submit"/>
-	</form>	
-	<div id="message_holder"></div>
-	
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <form action="" method="POST"> 
+        Enter number of Attempts : <input type="number" id="attempts" name="attempts" required/><br /><br />
+        <input type="submit"/>
+      </form>	
+      <div id="message_holder"></div>
+      <div class="card">
+        <table id="tableId" class="row-border hover order-column" style="width:100%">
+          <thead>
+            <tr>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+             </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>START</td>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+            </tr>
+            <tr>
+              <td>0</td>
+              <td>X</td>
+              <td>0</td>
+              <td>X</td>
+            </tr>
+            <tr>
+              <td>0</td>
+              <td>0</td>
+              <td>0</td>
+              <td>X</td>
+            </tr>
+            <tr>
+              <td>X</td>
+              <td>0</td>
+              <td>0</td>
+              <td>GOAL</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 <!-- {% for point in point_path %}
     {{point}} <br>
 {% endfor %} -->
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
     <script type="text/javascript">
+      $(document).ready(function () {
+          $('#tableId').DataTable({
+              "searching": false,
+              "paging": false,
+              "info": false,
+              "ordering": false
+          });
+        });
       var socket = io.connect('http://' + document.domain + ':' + location.port);
       socket.on( 'connect', function() {
         socket.emit( 'my event', {
@@ -36,14 +116,26 @@
         } )
       } )
       socket.on( 'my response', function( msg ) {
-        console.log( msg )
         if( typeof msg.message !== 'undefined' ) {
+          console.log( msg )
         //   $( 'div.message_holder' ).append( '<div>'+msg.attempts+'</div>' )
-			document.getElementById("message_holder").innerHTML  = msg.message;
+          document.getElementById("message_holder").innerHTML  = msg.message;
+          var table = $('#tableId').DataTable();
+          if (msg["message"][0]=="(") {
+            var x = parseInt(msg["message"][1])
+            var y = parseInt(msg["message"][4])
+            $(table.cells().nodes()).removeClass( 'highlight');
+            // // console.log(table.row(x).nodes())
+            $(table.cells({row: x, column: y}).nodes()).addClass('highlight');
+          }
+          else {
+            $(table.cells().nodes()).removeClass( 'highlight');
+            // // console.log(table.row(x).nodes())
+            $(table.cells({row: 3, column: 3}).nodes()).addClass('highlight');
+          }
         }
       })
 	</script>
-	
 </body>
 </html>
 
